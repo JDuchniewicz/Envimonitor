@@ -1,8 +1,12 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
+
 import plotly.express as px
 import pandas as pd
+
+from . import query_api
 
 def create_dashboard(server):
     """Create a Plotly Dash dashboard."""
@@ -21,7 +25,23 @@ def create_dashboard(server):
     dash_app.layout = html.Div([
         dcc.Graph(id='life-exp-vs-gdp',
             figure=fig
+            ),
+        dcc.Interval(
+            id='interval-component',
+            interval=1*1000, # TODO: change duration
+            n_intervals=0
             )
         ])
 
+    # Callbacks have to be initialized here, when Dash app is created
+    init_calbacks(dash_app)
+
     return dash_app.server
+
+# graph updating  in callbacks
+def init_calbacks(dash_app):
+    @dash_app.callback(Output('redraw-something', 'children'),
+                       Input('interval-component', 'n_intervals'))
+    def redraw(what):
+        pass
+

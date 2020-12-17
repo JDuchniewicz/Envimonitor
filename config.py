@@ -22,3 +22,4 @@ class Config:
     # Static assets
     STATIC_FOLDER = "static"
     TEMPLATES_FOLDER = "templates"
+
